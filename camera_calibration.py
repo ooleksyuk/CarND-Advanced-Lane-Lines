@@ -11,11 +11,8 @@ def draw_corners(image, corners, ret, fname, ny=9, nx=6):
     '''
     Draw corners of image
     '''
-    cv2.drawChessboardCorners(image, (nx,ny), corners, ret)
     plt.imshow(image)
-    plt.show()
-    # cv2.waitKey(500)
-    print('Found corners for %s' % fname)
+    #plt.show()
 
 def save_image(image, idx):
     write_name = 'output_images/corners_found'+str(idx)+'.jpg'
@@ -50,9 +47,11 @@ def get_object_points():
             # save object points and it's corners
             objpoints.append(objp)
             imgpoints.append(corners)
+            cv2.drawChessboardCorners(image, (nx,ny), corners, ret)
             
             draw_corners(image, corners, ret, fname, 9, 6)
             save_image(image, idx)
+            print('Found corners for %s' % fname)
         else:
             print('Warning: ret = %s for %s' % (ret, fname))
     cv2.destroyAllWindows()        
@@ -64,21 +63,16 @@ def calibrate_camera():
     objpoints, imgpoints = get_object_points()
     
     # Test undistortion on an image
-    img = cv2.imread('camera_cal/test_image.jpg')
+    img = cv2.imread('test_images/straight_lines1.jpg')
     img_size = (img.shape[1], img.shape[0])
     
     # Do camera calibration given object points and image points
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size, None, None)
     save_mtx_dist(mtx, dist)
-    
-    dst = cv2.undistort(img, mtx, dist, None, mtx)
-    cv2.imwrite('output_images/test_undist.jpg',dst)
-
-    draw_two_images(img, dst)
 
     return mtx, dist
 
-def draw_two_images(img, dst):
+def draw_two_images(img, dst, idx):
     #dst = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
     # Visualize undistortion
     f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
@@ -86,7 +80,8 @@ def draw_two_images(img, dst):
     ax1.set_title('Original Image', fontsize=30)
     ax2.imshow(dst)
     ax2.set_title('Undistorted Image', fontsize=30)
-    plt.show()
+    #plt.show()
+    plt.savefig('output_images/undistort_calibration'+str(idx)+'.jpg')
 
 def save_mtx_dist(mtx, dist):
     # Save the camera calibration result for later use (we won't worry about rvecs / tvecs)
@@ -98,4 +93,12 @@ def save_mtx_dist(mtx, dist):
     
 if __name__ == '__main__':
     print("Calibrating the camera...")
-    calibrate_camera()
+    mtx, dist = calibrate_camera()
+    
+    images = glob.glob('camera_cal/calibration*.jpg')
+    for idx, fname in enumerate(images):
+        img = cv2.imread(fname)
+        
+        dst = cv2.undistort(img, mtx, dist, None, mtx)
+
+        draw_two_images(img, dst, idx)
