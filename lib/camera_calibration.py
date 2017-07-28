@@ -5,7 +5,7 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import pickle
-print ("Imported all libraries!")
+print ("Imported all Camera Calibration libraries!")
 
 def draw_corners(image, corners, ret, fname, ny=9, nx=6):
     '''

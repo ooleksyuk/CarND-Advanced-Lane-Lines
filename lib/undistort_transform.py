@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import pickle
 import combined_threshold as com_thresh
+print("Imported All Undistort Transformation Libraries!")
     
 def calibrate_camera():
     dist_pickle = pickle.load( open( "output_images/calibrate_camera.p", "rb" ) )
