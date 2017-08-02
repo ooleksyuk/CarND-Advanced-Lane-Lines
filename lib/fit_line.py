@@ -296,11 +296,13 @@ def final_vizualzation(undist, left_fit, right_fit, m_inv, left_curve, right_cur
     result = cv2.addWeighted(undist, 1, newwarp, 0.3, 0)
 
     # Annotate lane curvature values and vehicle offset from center
+    font = cv2.FONT_HERSHEY_DUPLEX
+    
     avg_curve = (left_curve + right_curve)/2
     label_str = 'Radius of curvature: %.1f m' % avg_curve
-    cv2.putText(result, label_str, (30,40), 0, 1, (0,0,0), 2, cv2.CV_AA)
+    cv2.putText(result, label_str, (30,40), font, 1, (0,0,0), 2, cv2.CV_AA)
     
     label_str = 'Vehicle offset from lane center: %.1f m' % vehicle_offset
-    cv2.putText(result, label_str, (30,70), 0, 1, (0,0,0), 2, cv2.CV_AA)
+    cv2.putText(result, label_str, (30,70), font, 1, (0,0,0), 2, cv2.CV_AA)
     
     return result
