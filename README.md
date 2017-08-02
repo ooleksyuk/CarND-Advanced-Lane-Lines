@@ -27,3 +27,38 @@ To calibrate camera I started with objpoints, imgpoints. Prepared object points,
 ![undistort transform](/output_images/pre_process_steps/undistort_calibration11.jpg "Undistort Transform")
 ![undistort transform road](/output_images/pre_process_steps/undistort_transform.jpg "Undistort Transform Real Road Lane Lines")
 More image examples in `/output_images/pre_process_steps/` folder.
+### Pipeline (single images)
+For each of the images in `test_images` I created a pipaline. The frist step was to get saved calibration camera results from `output_images/calibrate_camera.p` 
+```python
+with open("output_images/calibrate_camera.p", "rb") as f:
+        save_dict = pickle.load(f)
+    mtx = save_dict["mtx"]
+    dist = save_dict["dist"]
+```
+and apply it to the images to undistored each images with OpenCv function `undist = cv2.undistort(img_in, mtx, dist, None, mtx)`.
+Here is an example ![test1 undistort](/output_images/example/test1_undistort.png)
+
+Step two was to take undistoredted image and apply combined threshold with `img, combined2, abs_bin, mag_bin, dir_bin, hls_s_bin, lab_b_bin, hls_l_bin = combined_thresh(undist)`
+Here is an axample ![combined threshold](output_images/combined_threshold.jpg "Apply Combined threshold")
+
+As a finale image pre processgin step I did perspective transform with `binary_warped, binary_unwarped, m, m_inv = perspective_transform(img)`, `img` is the output of thepreviouse function `combined_thresh()`.
+
+Here is an aexample ![pipeline warped](/output_images/pipeline_warped.jpg "Perspective transform")
+
+Next step was to draw a sliding box on found lane line to locate just the lane line and exclude the rest of the pixels that do not belond to the lane.
+![pipeline sliding box](/output_images/pipeline_sliding_box.jpg "Line finding, sliding box")
+`line_fit(binary_warped)` will try to find a line on the image. 
+![straight_lines2_polyfit](/output_images/example/straight_lines2_polyfit.png "Polyfit cunstion on straight lanes")
+Try to fit left and right lines with
+```python
+    left_fit = left_line.add_fit(left_fit)
+    right_fit = right_line.add_fit(right_fit)
+```
+
+Calculate line curvature `left_curve, right_curve = calculate_curve(left_lane_inds, right_lane_inds, nonzerox, nonzeroy)`.
+
+As a final step try to find vechicle offset `vehicle_offset = calculate_vehicle_offset(undist, left_fit, right_fit)`
+
+Project video ![project_video_output](/output_images/video/project_video_output.mp4)
+Challenge video ![challenge_video_output](/output_images/video/challenge_video_output.mp4)
+Harder Challenge video ![harder_challenge_video_output](/output_images/video/harder_challenge_video_output.mp4)
