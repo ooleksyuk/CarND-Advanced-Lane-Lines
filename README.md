@@ -15,7 +15,7 @@ The goals / steps of this project are the following:
 * Warp the detected lane boundaries back onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 
-![Straight Lines Annotated Image](/output_images/examples/straight_lines1_annotated.png "Straight Lines Annotated Image")
+![Straight Lines Annotated Image](/output_images/example/straight_lines1_annotated.png "Straight Lines Annotated Image")
 
 ## [Rubic Points](https://review.udacity.com/#!/rubrics/476/view)
 ### Camera Calibration
@@ -26,4 +26,4 @@ To calibrate camera I started with objpoints, imgpoints. Prepared object points,
 ![chess board corners](/output_images/pre_process_steps/corners_found11.jpg "Chess board corners")
 ![undistort transform](/output_images/pre_process_steps/undistort_calibration11.jpg "Undistort Transform")
 ![undistort transform road](/output_images/pre_process_steps/undistort_transform.jpg "Undistort Transform Real Road Lane Lines")
-More image examples in `More image examples in `.
+More image examples in `/output_images/pre_process_steps/` folder.
