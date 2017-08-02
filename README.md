@@ -59,6 +59,6 @@ Calculate line curvature `left_curve, right_curve = calculate_curve(left_lane_in
 
 As a final step try to find vechicle offset `vehicle_offset = calculate_vehicle_offset(undist, left_fit, right_fit)`
 
-Project video ![project_video_output](/output_images/video/project_video_output.mp4)
-Challenge video ![challenge_video_output](/output_images/video/challenge_video_output.mp4)
-Harder Challenge video ![harder_challenge_video_output](/output_images/video/harder_challenge_video_output.mp4)
+[Project video](/output_images/video/project_video_output.mp4)
+[Challenge video](/output_images/video/challenge_video_output.mp4)
+[Harder Challenge video](/output_images/video/harder_challenge_video_output.mp4)
