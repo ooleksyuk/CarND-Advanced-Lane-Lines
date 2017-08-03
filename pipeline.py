@@ -142,7 +142,7 @@ def annotate_image(img_in):
 
 def annotate_video(input_file, output_file):
     """ Given input_file video, save annotated video to output_file """
-    video = VideoFileClip(input_file)
+    video = VideoFileClip(input_file).subclip(0, 43)
     
     annotated_video = video.fl_image(annotate_image)
     annotated_video.write_videofile(output_file, audio=False)

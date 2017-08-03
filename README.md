@@ -56,9 +56,29 @@ Try to fit left and right lines with
 ```
 
 Calculate line curvature `left_curve, right_curve = calculate_curve(left_lane_inds, right_lane_inds, nonzerox, nonzeroy)`.
+I used these formulars to calculate it: 
+
+<img src="http://latex.codecogs.com/gif.latex?f(y)&space;=&space;Ax^{2}&space;&plus;&space;Bx&space;&plus;&space;C" title="f(y) = Ax^{2} + Bx + C" />
+
+<img src="http://latex.codecogs.com/gif.latex?{f}'(y)&space;=&space;\frac{\mathrm{d}&space;x}{\mathrm{d}&space;y}&space;=&space;2Ax&space;&plus;&space;B" title="{f}'(y) = \frac{\mathrm{d} x}{\mathrm{d} y} = 2Ax + B" />
+
+<img src="http://latex.codecogs.com/gif.latex?{f}''(y)&space;=&space;\frac{\mathrm{d}&space;x^{2}}{\mathrm{d}&space;y^{2}}&space;=&space;2A" title="{f}''(y) = \frac{\mathrm{d} x^{2}}{\mathrm{d} y^{2}} = 2A" />
+
+<img src="http://latex.codecogs.com/gif.latex?R_{curve}&space;=&space;\frac{\left&space;|&space;(1&space;&plus;&space;(2Ay&space;&plus;&space;B)^{2})^{3/2}&space;\right&space;|}{\left&space;|&space;2A&space;\right&space;|}" title="R_{curve} = \frac{\left | (1 + (2Ay + B)^{2})^{3/2} \right |}{\left | 2A \right |}" />
 
 As a final step try to find vechicle offset `vehicle_offset = calculate_vehicle_offset(undist, left_fit, right_fit)`
+
+### Pipeline (video)
+The image processing pipeline that was established to find the lane lines in images successfully processes the project video. The pipeline correctly maps out curved lines and does not fail when shadows or pavement color changes are present.
+
+In the first few frames of video, the algorithm performs a search without prior assumptions about where the lines are. Once a confidence detection is achieved, that positional knowledge is used in future iterations as a starting point to find the lines.
 
 [Project video](/output_images/video/project_video_output.mp4)
 [Challenge video](/output_images/video/challenge_video_output.mp4)
 [Harder Challenge video](/output_images/video/harder_challenge_video_output.mp4)
+
+### Discussion
+*  This problem involves lot of hyper-parameters that need to be tuned invididually and properly to get the correct outcome. Perhaps, use of tools like the varying hyperparameters to check the output could be beneficial.
+*  During video testing, I used `subclip = VideoFileClip("project_video.mp4").subclip(41, 43)` a `subclip` to see/render only a part of the video, because rendering of the full video is very CPU heavy and time consuming.
+*  The pipeline fails in low light conditions where the lanes are not visible, covered with dark shades or lane curves spontaneously and drastically. This was observed during the testing of the pipeline on Challege and Hard challege videos.
+This project was based on computer vision techniques, to enhence line detection and perhaps improve algorythm performance, I would like to implement a solution to this problem using machine learning technics I acquired during previouse lessons.
